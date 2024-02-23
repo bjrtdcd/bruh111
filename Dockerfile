@@ -1,21 +1,8 @@
-# Use the Windows base image
-FROM mcr.microsoft.com/windows/servercore:ltsc2019
+# Use the base image
+FROM modenaf360/gotty:latest
 
-# Set working directory
-WORKDIR c:/vnc
+# Expose the desired port
+EXPOSE 8880
 
-# Add VNC server installation files and batch script
-ADD vnc_installer.exe c:/vnc/vnc_installer.exe
-ADD start_vnc.bat c:/vnc/start_vnc.bat
-
-# Install VNC server silently
-RUN start /wait vnc_installer.exe /S /norestart
-
-# Expose VNC port
-EXPOSE 5900
-
-# Install Localtunnel
-RUN npm install -g localtunnel
-
-# Start VNC server and Localtunnel
-CMD ["cmd", "/k", "start_vnc.bat"]
+# Start Gotty with the specified command
+CMD ["gotty", "--port", "8888", "/bin/bash"]
